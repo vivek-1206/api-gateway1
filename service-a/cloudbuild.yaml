@@ -22,3 +22,6 @@ steps:
 
 images:
   - 'gcr.io/jovial-style-484907-r1/service-a'
+
+options:
+  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
