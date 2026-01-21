@@ -15,5 +15,5 @@ app.get('/info', (req, res) => {
 });
 
 app.listen(8080, () => {
-  console.log("Service B running on port 8080");
+  console.log("Service B is running on port 8080");
 });
