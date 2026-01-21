@@ -4,44 +4,86 @@ info:
   version: 1.0.0
 
 paths:
+
+  ##############################
+  # Service A
+  ##############################
   /serviceA/hello:
     options:
-      summary: CORS preflight
+      summary: CORS preflight for Service A
       operationId: optionsServiceA
       responses:
         204:
           description: No content
+          headers:
+           Access-Control-Allow-Origin:
+             type: string
+             default: "*"
+           Access-Control-Allow-Methods:
+             type: string
+             default: "GET, OPTIONS"
+           Access-Control-Allow-Headers:
+            type: string
+            default: "Authorization, Content-Type"
       security: []
+
     get:
       summary: Invoke Service A
       operationId: getServiceA
       security:
         - firebase: []
       x-google-backend:
-        address: https://service-a-650031894545.us-central1.run.app
+        address: https://service-a-bpmemwdigq-uc.a.run.app
       responses:
         200:
           description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              type: string
+              default: "*"
 
+
+  ##############################
+  # Service B
+  ##############################
   /serviceB/info:
     options:
-      summary: CORS preflight
+      summary: CORS preflight for Service B
       operationId: optionsServiceB
       responses:
         204:
           description: No content
+          headers:
+            Access-Control-Allow-Origin:
+              type: string
+              default: "*"
+            Access-Control-Allow-Methods:
+              type: string
+              default: "GET, OPTIONS"
+            Access-Control-Allow-Headers:
+              type: string
+              default: "Authorization, Content-Type"
       security: []
+
     get:
       summary: Invoke Service B
       operationId: getServiceB
       security:
         - firebase: []
       x-google-backend:
-        address: https://service-b-650031894545.us-central1.run.app
+        address: https://service-b-bpmemwdigq-uc.a.run.app
       responses:
         200:
           description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              type: string
+              default: "*"
 
+
+####################################
+# Firebase Auth (unchanged)
+####################################
 securityDefinitions:
   firebase:
     type: oauth2
@@ -51,6 +93,10 @@ securityDefinitions:
     x-google-jwks_uri: "https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com"
     x-google-audiences: "test-apigateway-546c8"
 
+
+####################################
+# Gateway host config
+####################################
 x-google-endpoints:
   - name: my-gateway-8amc7fv5.uc.gateway.dev
     allowCors: true
