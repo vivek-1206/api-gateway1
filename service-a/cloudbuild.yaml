@@ -1,0 +1,24 @@
+steps:
+  # 1. Build the image for service-a
+  - name: 'gcr.io/cloud-builders/docker'
+    dir: 'service-a'
+    args: ['build', '-t', 'gcr.io/jovial-style-484907-r1/service-a', '.']
+
+  # 2. Push the image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/jovial-style-484907-r1/service-a']
+
+  # 3. Deploy to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - service-a
+      - --image=gcr.io/jovial-style-484907-r1/service-a
+      - --region=us-central1
+      - --platform=managed
+      - --no-allow-unauthenticated
+
+images:
+  - 'gcr.io/jovial-style-484907-r1/service-a'
