@@ -3,10 +3,11 @@ const cors = require('cors');
 
 const app = express();
 
-// Enable CORS for all origins, methods, and headers
+// Enable CORS
 app.use(cors());
 app.use(express.json());
 
+// Simple test endpoint
 app.get('/hello', (req, res) => {
   res.json({
     service: "A",
@@ -14,6 +15,9 @@ app.get('/hello', (req, res) => {
   });
 });
 
-app.listen(8080, () => {
-  console.log("Server running on port 8080");
+// Cloud Run requires PORT from env and 0.0.0.0 binding
+const PORT = process.env.PORT || 8080;
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Service A running on port ${PORT}`);
 });
