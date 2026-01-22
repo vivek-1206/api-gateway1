@@ -1,31 +1,39 @@
 swagger: "2.0"
+
 info:
   title: my-api
   version: 1.0.0
 
+# REQUIRED for GCP API Gateway + CORS
+host: my-gateway-8amc7fv5.uc.gateway.dev
+schemes:
+  - https
+
 paths:
 
-  ##############################
-  # Service A
-  ##############################
   /serviceA/hello:
     options:
-      summary: CORS preflight for Service A
+      summary: CORS preflight
       operationId: optionsServiceA
-      responses:
-        204:
-          description: No content
-          headers:
-           Access-Control-Allow-Origin:
-             type: string
-             default: "*"
-           Access-Control-Allow-Methods:
-             type: string
-             default: "GET, OPTIONS"
-           Access-Control-Allow-Headers:
-            type: string
-            default: "Authorization, Content-Type"
       security: []
+      x-google-backend:
+        address: https://httpbin.org/status/200
+      responses:
+        200:
+          description: CORS preflight
+          x-google-response-parameters:
+            Access-Control-Allow-Origin:
+              header: Access-Control-Allow-Origin
+              value: "'*'"
+            Access-Control-Allow-Methods:
+              header: Access-Control-Allow-Methods
+              value: "'GET, OPTIONS'"
+            Access-Control-Allow-Headers:
+              header: Access-Control-Allow-Headers
+              value: "'Authorization, Content-Type, Accept'"
+            Access-Control-Max-Age:
+              header: Access-Control-Max-Age
+              value: "'3600'"
 
     get:
       summary: Invoke Service A
@@ -33,37 +41,51 @@ paths:
       security:
         - firebase: []
       x-google-backend:
-        address: https://service-a-bpmemwdigq-uc.a.run.app
+        address: https://service-a-bpmemwdigq-uc.a.run.app/hello
+        path_translation: CONSTANT_ADDRESS
       responses:
         200:
           description: OK
-          headers:
+          x-google-response-parameters:
             Access-Control-Allow-Origin:
-              type: string
-              default: "*"
+              header: Access-Control-Allow-Origin
+              value: "'*'"
+        401:
+          description: Unauthorized
+          x-google-response-parameters:
+            Access-Control-Allow-Origin:
+              header: Access-Control-Allow-Origin
+              value: "'*'"
+        403:
+          description: Forbidden
+          x-google-response-parameters:
+            Access-Control-Allow-Origin:
+              header: Access-Control-Allow-Origin
+              value: "'*'"
 
-
-  ##############################
-  # Service B
-  ##############################
   /serviceB/info:
     options:
-      summary: CORS preflight for Service B
+      summary: CORS preflight
       operationId: optionsServiceB
-      responses:
-        204:
-          description: No content
-          headers:
-            Access-Control-Allow-Origin:
-              type: string
-              default: "*"
-            Access-Control-Allow-Methods:
-              type: string
-              default: "GET, OPTIONS"
-            Access-Control-Allow-Headers:
-              type: string
-              default: "Authorization, Content-Type"
       security: []
+      x-google-backend:
+        address: https://httpbin.org/status/200
+      responses:
+        200:
+          description: CORS preflight
+          x-google-response-parameters:
+            Access-Control-Allow-Origin:
+              header: Access-Control-Allow-Origin
+              value: "'*'"
+            Access-Control-Allow-Methods:
+              header: Access-Control-Allow-Methods
+              value: "'GET, OPTIONS'"
+            Access-Control-Allow-Headers:
+              header: Access-Control-Allow-Headers
+              value: "'Authorization, Content-Type, Accept'"
+            Access-Control-Max-Age:
+              header: Access-Control-Max-Age
+              value: "'3600'"
 
     get:
       summary: Invoke Service B
@@ -71,19 +93,28 @@ paths:
       security:
         - firebase: []
       x-google-backend:
-        address: https://service-b-bpmemwdigq-uc.a.run.app
+        address: https://service-b-bpmemwdigq-uc.a.run.app/info
+        path_translation: CONSTANT_ADDRESS
       responses:
         200:
           description: OK
-          headers:
+          x-google-response-parameters:
             Access-Control-Allow-Origin:
-              type: string
-              default: "*"
+              header: Access-Control-Allow-Origin
+              value: "'*'"
+        401:
+          description: Unauthorized
+          x-google-response-parameters:
+            Access-Control-Allow-Origin:
+              header: Access-Control-Allow-Origin
+              value: "'*'"
+        403:
+          description: Forbidden
+          x-google-response-parameters:
+            Access-Control-Allow-Origin:
+              header: Access-Control-Allow-Origin
+              value: "'*'"
 
-
-####################################
-# Firebase Auth (unchanged)
-####################################
 securityDefinitions:
   firebase:
     type: oauth2
@@ -93,10 +124,6 @@ securityDefinitions:
     x-google-jwks_uri: "https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com"
     x-google-audiences: "test-apigateway-546c8"
 
-
-####################################
-# Gateway host config
-####################################
 x-google-endpoints:
   - name: my-gateway-8amc7fv5.uc.gateway.dev
     allowCors: true
