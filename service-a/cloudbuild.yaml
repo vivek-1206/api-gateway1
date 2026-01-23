@@ -31,12 +31,12 @@ steps:
         KEEP=2
 
         gcloud run revisions list \
-          --service=$SERVICE \
-          --region=$REGION \
+          --service=$$SERVICE \
+          --region=$$REGION \
           --sort-by=metadata.creationTimestamp \
           --format="value(metadata.name)" \
-        | head -n -$KEEP \
-        | xargs -r gcloud run revisions delete --region=$REGION --quiet
+        | head -n $$KEEP \
+        | xargs -r gcloud run revisions delete --region=$$REGION --quiet
 
 images:
   - 'gcr.io/jovial-style-484907-r1/service-a'
