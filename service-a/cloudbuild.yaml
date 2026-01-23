@@ -38,9 +38,7 @@ steps:
         | head -n -$$KEEP \
         | while read REV; do
             echo "Deleting revision: $$REV"
-            gcloud run revisions delete \
-              --revision=$$REV \
-              --service=$$SERVICE \
+            gcloud run revisions delete $$REV \
               --region=$$REGION \
               --quiet
           done
