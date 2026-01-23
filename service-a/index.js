@@ -15,9 +15,6 @@ app.get('/hello', (req, res) => {
   });
 });
 
-// Cloud Run requires PORT from env and 0.0.0.0 binding
-const PORT = process.env.PORT || 8080;
-
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Service A running on port ${PORT}`);
+app.listen(8080, () => {
+  console.log("Service B is running on port 8080");
 });
