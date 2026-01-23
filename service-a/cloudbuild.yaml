@@ -20,6 +20,24 @@ steps:
       - --platform=managed
       - --no-allow-unauthenticated
 
+  # 4. Cleanup old revisions (KEEP latest 2)
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        REGION=us-central1
+        SERVICE=service-a
+        KEEP=2
+
+        gcloud run revisions list \
+          --service=$SERVICE \
+          --region=$REGION \
+          --sort-by=metadata.creationTimestamp \
+          --format="value(metadata.name)" \
+        | head -n -$KEEP \
+        | xargs -r gcloud run revisions delete --region=$REGION --quiet
+
 images:
   - 'gcr.io/jovial-style-484907-r1/service-a'
 
