@@ -35,8 +35,15 @@ steps:
           --region=$$REGION \
           --sort-by=metadata.creationTimestamp \
           --format="value(metadata.name)" \
-        | head -n $$KEEP \
-        | xargs -r gcloud run revisions delete --region=$$REGION --quiet
+        | head -n -$$KEEP \
+        | while read REV; do
+            echo "Deleting revision: $$REV"
+            gcloud run revisions delete \
+              --revision=$$REV \
+              --service=$$SERVICE \
+              --region=$$REGION \
+              --quiet
+          done
 
 images:
   - 'gcr.io/jovial-style-484907-r1/service-a'
