@@ -17,7 +17,7 @@ paths:
       operationId: optionsServiceA
       security: []
       x-google-backend:
-        address: https://httpbin.org/status/200
+        address: https://service-a-650031894545.us-central1.run.app
       responses:
         200:
           description: CORS preflight
@@ -41,7 +41,7 @@ paths:
       security:
         - firebase: []
       x-google-backend:
-        address: https://service-a-bpmemwdigq-uc.a.run.app/hello
+        address: https://service-a-650031894545.us-central1.run.app/hello
         path_translation: CONSTANT_ADDRESS
       responses:
         200:
@@ -69,7 +69,7 @@ paths:
       operationId: optionsServiceB
       security: []
       x-google-backend:
-        address: https://httpbin.org/status/200
+        address: https://service-b-650031894545.us-central1.run.app
       responses:
         200:
           description: CORS preflight
@@ -93,7 +93,7 @@ paths:
       security:
         - firebase: []
       x-google-backend:
-        address: https://service-b-bpmemwdigq-uc.a.run.app/info
+        address: https://service-b-650031894545.us-central1.run.app/info
         path_translation: CONSTANT_ADDRESS
       responses:
         200:

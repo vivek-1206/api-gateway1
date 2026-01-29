@@ -5,6 +5,7 @@ const app = express();
 
 // Enable CORS for all origins, all methods, all headers
 app.use(cors());
+app.options('*', cors());
 app.use(express.json());
 
 app.get('/info', (req, res) => {
